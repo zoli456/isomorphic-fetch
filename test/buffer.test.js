@@ -1,16 +1,19 @@
-var Buffer = require("../src/npm-node").Buffer;
+/**
+ * @jest-environment jsdom
+ */
 
-var expect = require("chai").expect;
+const Buffer = require("../src/npm-browser").Buffer;
 
-describe("buffer", function () {
+describe("(Browser) buffer", function () {
+
 	it("should correctly use buffer methods", function () {
-		var arr = new Uint16Array(2);
+		const arr = new Uint16Array(2);
 
 		arr[0] = 5000;
 		arr[1] = 4000;
 
-		var buf = Buffer.from(arr.buffer);
+		const buf = Buffer.from(arr.buffer);
 
-		expect(Buffer.isBuffer(buf)).to.equal(true);
+		expect(Buffer.isBuffer(buf)).toBe(true);
 	});
 });

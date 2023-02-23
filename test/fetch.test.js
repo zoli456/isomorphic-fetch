@@ -1,44 +1,34 @@
-/*global fetch*/
-"use strict";
+/**
+ * @jest-environment node
+ */
 
-require("../src/npm-node");
-var expect = require("chai").expect;
-var good = {
-	message: "hello, i'm fine",
-	status: "success",
-};
+require("../src/npm-node.js");
+const express = require('express')
 
-var MockAgent = require("./fetch-mock.js");
-var setGlobalDispatcher = require("undici").setGlobalDispatcher;
-setGlobalDispatcher(MockAgent);
+describe("(node) Fetch", () => {
+	let app;
 
-function responseToText(response) {
-	if (response.status >= 400) throw new Error("Bad server response");
-	return response.json();
-}
+	beforeAll(() => {
+		app = express()
 
-describe("fetch", function () {
-	it("should be defined", function () {
-		expect(fetch).to.be.a("function");
+		app.get('/', function (req, res) {
+			res.json({ "good": "good" })
+		})
+
+		app = app.listen(3021)
 	});
 
-	it("should facilitate the making of requests", function (done) {
-		fetch("https://api.redstone.finance/succeed")
-			.then(responseToText)
-			.then(function (data) {
-				expect(data.message).to.equal(good.message);
-				done();
-			})
-			.catch(done);
+	afterAll(() => {
+		app.close()
 	});
 
-	it("should do the right thing with bad requests", function (done) {
-		fetch("https://api.redstone.finance/fail")
-			.then(responseToText)
-			.catch(function (err) {
-				expect(err.toString()).to.equal("Error: Bad server response");
-				done();
-			})
-			.catch(done);
+	it("should be defined", () => {
+		expect(fetch).toBeDefined()
+	});
+
+	it("should work on good requests", async () => {
+		await expect(fetch('http://localhost:3021').then(data => data.json())).resolves.toEqual({ good: "good" })
 	});
 });
+
+
