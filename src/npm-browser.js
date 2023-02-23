@@ -2,10 +2,7 @@ window.global = window;
 
 global.fetch = window.fetch;
 
-
 module.exports = {
     Buffer: require("buffer").Buffer,
-    Crypto: {
-        ...self.crypto
-    }
+    Crypto: window.crypto
 }

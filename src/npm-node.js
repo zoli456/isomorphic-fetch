@@ -1,22 +1,20 @@
 "use strict";
 
-var undici = require("undici");
-var realFetch = undici.fetch;
+const undici = require("undici");
+const realFetch = undici.fetch;
 
-var crypto = require('crypto');
-var util = require("util");
-var TextEncoder = util.TextEncoder;
-var TextDecoder = util.TextDecoder;
-
-module.exports = function (url, options) {
-	if (/^\/\//.test(url)) {
-		url = "https:" + url;
-	}
-	return realFetch.call(this, url, options);
-};
+const crypto = require('node:crypto');
+const util = require("util");
+const TextEncoder = util.TextEncoder;
+const TextDecoder = util.TextDecoder;
 
 if (!global.fetch) {
-	global.fetch = module.exports;
+	global.fetch = function (url, options) {
+		if (/^\/\//.test(url)) {
+			url = "https:" + url;
+		}
+		return realFetch.call(this, url, options);
+	};;
 	global.Response = undici.Response;
 	global.Headers = undici.Headers;
 	global.Request = undici.Request;
@@ -30,7 +28,5 @@ if (!global.TextEncoder) {
 
 module.exports = {
 	Buffer: Buffer,
-	Crypto: {
-		...crypto.webcrypto
-	}
+	Crypto: crypto.webcrypto
 }
