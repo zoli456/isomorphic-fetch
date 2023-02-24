@@ -1,6 +1,6 @@
 {
   "name": "warp-isomorphic",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Isomorphic API for Node & browser",
   "browser": "dist/src/npm-browser.js",
   "main": "dist/src/npm-node.js",
