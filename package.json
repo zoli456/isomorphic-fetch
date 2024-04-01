@@ -1,5 +1,5 @@
 {
-  "name": "warp-isomorphic",
+  "name": "isomorphic-fetch",
   "version": "1.0.7",
   "description": "Isomorphic API for Node & browser",
   "browser": "dist/src/npm-browser.js",
